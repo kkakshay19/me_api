@@ -114,8 +114,30 @@ section {
     text-decoration: underline;
 }
 
+/* Work experience */
+.work-card {
+    background: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 12px;
+}
+
+.work-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.work-dates {
+    font-size: 0.9rem;
+    color: #666;
+}
+
 /* Search sections */
-input[type="text"] {
+#skill-search-section input[type="text"] {
     padding: 8px;
     border: 1px solid #ddd;
     border-radius: 4px;
@@ -124,7 +146,7 @@ input[type="text"] {
     margin-right: 10px;
 }
 
-button {
+#skill-search-section button {
     padding: 8px 16px;
     background: #3498db;
     color: white;
@@ -134,11 +156,11 @@ button {
     transition: background 0.3s;
 }
 
-button:hover {
+#skill-search-section button:hover {
     background: #2980b9;
 }
 
-#skill-results, #global-results {
+#skill-results {
     margin-top: 20px;
 }
 

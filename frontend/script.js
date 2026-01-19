@@ -55,6 +55,34 @@ async function loadProfile() {
     `;
 }
 
+// Load and display work experience
+async function loadWorkExperience() {
+    const container = document.getElementById('work-content');
+    const data = await fetchData('work-experiences/');
+
+    if (data.error) {
+        displayError(container, `Failed to load work experience: ${data.error}`);
+        return;
+    }
+
+    if (!data || data.length === 0) {
+        displayNoResults(container, 'No work experience found');
+        return;
+    }
+
+    container.innerHTML = data.map(item => `
+        <div class="work-card">
+            <div class="work-header">
+                <h3>${item.role || 'Role not specified'} @ ${item.company || 'Company not specified'}</h3>
+                <span class="work-dates">
+                    ${item.start_date || 'Start'} — ${item.end_date || 'Present'}
+                </span>
+            </div>
+            <p>${item.description || 'No description available'}</p>
+        </div>
+    `).join('');
+}
+
 // Load and display all projects
 async function loadProjects() {
     const container = document.getElementById('projects-content');
@@ -123,67 +151,11 @@ async function searchProjectsBySkill() {
     `).join('');
 }
 
-// Global search
-async function globalSearch() {
-    const searchInput = document.getElementById('global-search-input');
-    const query = searchInput.value.trim();
-    const container = document.getElementById('global-results');
-
-    if (!query) {
-        displayNoResults(container, 'Please enter a search term');
-        return;
-    }
-
-    // Show loading state
-    container.innerHTML = '<p>Searching...</p>';
-
-    const data = await fetchData(`search/?q=${encodeURIComponent(query)}`);
-
-    if (data.error) {
-        displayError(container, `Search failed: ${data.error}`);
-        return;
-    }
-
-    let resultsHtml = '';
-
-    // Display matched projects
-    if (data.projects && Array.isArray(data.projects) && data.projects.length > 0) {
-        resultsHtml += '<h3>Projects</h3>';
-        resultsHtml += data.projects.map(project => `
-            <div class="project-card">
-                <h3>${project.title || 'Untitled Project'}</h3>
-                <p>${project.description || 'No description available'}</p>
-                <div class="project-skills">
-                    ${project.skills && Array.isArray(project.skills) ? project.skills.map(skill => `<span class="skill-tag">${skill.name || skill}</span>`).join('') : ''}
-                </div>
-                <div class="project-links">
-                    ${project.links && project.links.github ? `<a href="${project.links.github}" target="_blank">GitHub</a>` : ''}
-                    ${project.links && project.links.demo ? `<a href="${project.links.demo}" target="_blank">Demo</a>` : ''}
-                </div>
-            </div>
-        `).join('');
-    }
-
-    // Display matched skills
-    if (data.skills && Array.isArray(data.skills) && data.skills.length > 0) {
-        resultsHtml += '<h3>Skills</h3>';
-        resultsHtml += '<div class="project-skills">';
-        resultsHtml += data.skills.map(skill => `<span class="skill-tag">${skill.name || skill}</span>`).join('');
-        resultsHtml += '</div>';
-    }
-
-    if (!resultsHtml) {
-        displayNoResults(container, `No results found for: ${query}`);
-        return;
-    }
-
-    container.innerHTML = resultsHtml;
-}
-
 // Event listeners
 document.addEventListener('DOMContentLoaded', function() {
     // Load initial data
     loadProfile();
+    loadWorkExperience();
     loadProjects();
 
     // Skill search
@@ -194,11 +166,5 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Global search
-    document.getElementById('global-search-btn').addEventListener('click', globalSearch);
-    document.getElementById('global-search-input').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            globalSearch();
-        }
-    });
+    // Global search removed
 });

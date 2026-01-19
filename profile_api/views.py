@@ -60,6 +60,13 @@ class SkillsTopView(APIView):
         serializer = SkillSerializer(skills, many=True)
         return Response(serializer.data)
 
+
+class WorkExperienceView(APIView):
+    def get(self, request):
+        work_entries = WorkExperience.objects.all().order_by('-start_date')
+        serializer = WorkExperienceSerializer(work_entries, many=True)
+        return Response(serializer.data)
+
 class SearchView(APIView):
     def get(self, request):
         query = request.query_params.get('q', '').strip()
@@ -67,7 +74,9 @@ class SearchView(APIView):
             return Response({
                 "message": "Query parameter 'q' is required",
                 "projects": [],
-                "skills": []
+                "skills": [],
+                "work_experiences": [],
+                "profiles": []
             }, status=status.HTTP_400_BAD_REQUEST)
         
         try:
@@ -80,15 +89,33 @@ class SearchView(APIView):
             
             # Search skills by name
             skills = Skill.objects.filter(name__icontains=query).order_by('name')
+
+            # Search work experience by company, role, or description
+            work_experiences = WorkExperience.objects.filter(
+                Q(company__icontains=query) |
+                Q(role__icontains=query) |
+                Q(description__icontains=query)
+            ).order_by('-start_date')
+
+            # Search profile by name, education, or bio (single profile)
+            profile = Profile.objects.filter(
+                Q(name__icontains=query) |
+                Q(education__icontains=query) |
+                Q(bio__icontains=query)
+            ).first()
             
             result = {
                 "projects": ProjectSerializer(projects, many=True).data,
-                "skills": SkillSerializer(skills, many=True).data
+                "skills": SkillSerializer(skills, many=True).data,
+                "work_experiences": WorkExperienceSerializer(work_experiences, many=True).data,
+                "profiles": ProfileSerializer(profile).data if profile else None,
             }
             return Response(result)
         except Exception as e:
             return Response({
                 "error": str(e),
                 "projects": [],
-                "skills": []
+                "skills": [],
+                "work_experiences": [],
+                "profiles": []
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

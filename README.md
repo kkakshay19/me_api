@@ -4,12 +4,12 @@ A Django REST API backend with a minimal frontend for showcasing a personal cand
 
 ## Overview
 
-This project demonstrates a simple yet complete backend API built with Django and Django REST Framework, using MySQL as the database. It includes CRUD operations for profile data, project listings with skill filtering, skill popularity ranking, and search functionality across projects and skills. A minimal HTML/JS frontend is provided to interact with the APIs.
+This project demonstrates a simple yet complete backend API built with Django and Django REST Framework, using PostgreSQL as the database. It includes CRUD operations for profile data, project listings with skill filtering, skill popularity ranking, and search functionality across projects and skills. A minimal HTML/JS frontend is provided to interact with the APIs.
 
 ## Architecture
 
 - **Backend**: Django 6.0.1 with Django REST Framework
-- **Database**: MySQL
+- **Database**: PostgreSQL
 - **Frontend**: Plain HTML + JavaScript (no frameworks)
 - **CORS**: Enabled for frontend-backend communication
 
@@ -26,7 +26,7 @@ This project demonstrates a simple yet complete backend API built with Django an
 ### Prerequisites
 
 - Python 3.8+
-- MySQL
+- PostgreSQL 12+
 - Git
 
 ### Installation
@@ -48,26 +48,32 @@ This project demonstrates a simple yet complete backend API built with Django an
    pip install -r requirements.txt
    ```
 
-4. Set up MySQL database:
-    - Create a database named `me_api_db`
-    - Update `settings.py` with your MySQL credentials if different
+4. Set up PostgreSQL database:
+   - Create a database named `me_api`
+   - Create (or use) a PostgreSQL user with password (defaults in `settings.py`: user `postgres`, password `Akshay@125*`, host `localhost`, port `5432`)
+   - If your credentials differ, update `DATABASES` in `me_api/settings.py`
 
-5. Run migrations:
+5. Install the PostgreSQL driver (if not already present):
+   ```bash
+   pip install psycopg2-binary
+   ```
+
+6. Run migrations:
    ```bash
    python manage.py migrate
    ```
 
-6. Seed the database:
+7. Seed the database:
    ```bash
    python manage.py seed
    ```
 
-7. Run the server:
+8. Run the server:
    ```bash
    python manage.py runserver
    ```
 
-8. Open the frontend:
+9. Open the frontend:
    - Open `frontend/index.html` in your browser
    - Ensure the backend is running on `http://localhost:8000`
    - The frontend will automatically load profile and projects data
