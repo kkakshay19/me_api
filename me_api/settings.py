@@ -30,7 +30,10 @@ SECRET_KEY = os.getenv(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DJANGO_DEBUG", "True").lower() == "true"
 
-ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "*").split(",")
+ALLOWED_HOSTS = os.getenv(
+    "DJANGO_ALLOWED_HOSTS",
+    "localhost,127.0.0.1,.onrender.com"
+).split(",")
 
 
 # Application definition
@@ -57,6 +60,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'me_api.urls'
@@ -86,7 +90,7 @@ DATABASES = {
     "default": dj_database_url.config(
         default=os.getenv(
             "DATABASE_URL",
-            "postgres://postgres:Akshay@125*@localhost:5432/me_api",
+            "postgresql://postgres:Akshay%40125%2A@localhost:5432/me_api",
         ),
         conn_max_age=600,
     )
