@@ -5,10 +5,12 @@ const API_BASE_URL = '/api/';
 async function fetchData(endpoint) {
     try {
         const response = await fetch(`${API_BASE_URL}${endpoint}`);
+        const data = await response.json();
         if (!response.ok) {
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            // Return the error data from the API response
+            return { error: data.message || data.error || `HTTP ${response.status}: ${response.statusText}`, ...data };
         }
-        return await response.json();
+        return data;
     } catch (error) {
         console.error('API Error:', error);
         return { error: error.message };
@@ -132,6 +134,9 @@ async function globalSearch() {
         return;
     }
 
+    // Show loading state
+    container.innerHTML = '<p>Searching...</p>';
+
     const data = await fetchData(`search/?q=${encodeURIComponent(query)}`);
 
     if (data.error) {
@@ -142,14 +147,14 @@ async function globalSearch() {
     let resultsHtml = '';
 
     // Display matched projects
-    if (data.projects && data.projects.length > 0) {
+    if (data.projects && Array.isArray(data.projects) && data.projects.length > 0) {
         resultsHtml += '<h3>Projects</h3>';
         resultsHtml += data.projects.map(project => `
             <div class="project-card">
-                <h3>${project.title}</h3>
-                <p>${project.description}</p>
+                <h3>${project.title || 'Untitled Project'}</h3>
+                <p>${project.description || 'No description available'}</p>
                 <div class="project-skills">
-                    ${project.skills ? project.skills.map(skill => `<span class="skill-tag">${skill.name}</span>`).join('') : ''}
+                    ${project.skills && Array.isArray(project.skills) ? project.skills.map(skill => `<span class="skill-tag">${skill.name || skill}</span>`).join('') : ''}
                 </div>
                 <div class="project-links">
                     ${project.links && project.links.github ? `<a href="${project.links.github}" target="_blank">GitHub</a>` : ''}
@@ -160,10 +165,10 @@ async function globalSearch() {
     }
 
     // Display matched skills
-    if (data.skills && data.skills.length > 0) {
+    if (data.skills && Array.isArray(data.skills) && data.skills.length > 0) {
         resultsHtml += '<h3>Skills</h3>';
         resultsHtml += '<div class="project-skills">';
-        resultsHtml += data.skills.map(skill => `<span class="skill-tag">${skill.name}</span>`).join('');
+        resultsHtml += data.skills.map(skill => `<span class="skill-tag">${skill.name || skill}</span>`).join('');
         resultsHtml += '</div>';
     }
 

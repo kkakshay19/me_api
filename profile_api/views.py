@@ -62,15 +62,33 @@ class SkillsTopView(APIView):
 
 class SearchView(APIView):
     def get(self, request):
-        query = request.query_params.get('q', '')
+        query = request.query_params.get('q', '').strip()
         if not query:
-            return Response({"message": "Query parameter 'q' is required"}, status=status.HTTP_400_BAD_REQUEST)
-        projects = Project.objects.filter(
-            Q(title__icontains=query) | Q(description__icontains=query) | Q(skills__name__icontains=query)
-        ).distinct()
-        skills = Skill.objects.filter(name__icontains=query)
-        result = {
-            "projects": ProjectSerializer(projects, many=True).data,
-            "skills": SkillSerializer(skills, many=True).data
-        }
-        return Response(result)
+            return Response({
+                "message": "Query parameter 'q' is required",
+                "projects": [],
+                "skills": []
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            # Search projects by title, description, or skills
+            projects = Project.objects.filter(
+                Q(title__icontains=query) | 
+                Q(description__icontains=query) | 
+                Q(skills__name__icontains=query)
+            ).distinct().order_by('id')
+            
+            # Search skills by name
+            skills = Skill.objects.filter(name__icontains=query).order_by('name')
+            
+            result = {
+                "projects": ProjectSerializer(projects, many=True).data,
+                "skills": SkillSerializer(skills, many=True).data
+            }
+            return Response(result)
+        except Exception as e:
+            return Response({
+                "error": str(e),
+                "projects": [],
+                "skills": []
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

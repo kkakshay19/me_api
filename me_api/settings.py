@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure--f1k@b)4a%k5!74-p06&zfrwz@b47@hy4v$%ec92bayprk=+7e
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -87,7 +87,7 @@ DATABASES = {
         'PORT': os.getenv('MYSQL_PORT', '3306'),
         'OPTIONS': {
             'charset': 'utf8mb4',
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES', character_set_connection=utf8mb4, collation_connection=utf8mb4_unicode_ci",
         },
     }
 }
@@ -130,6 +130,8 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'frontend']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
 
 # CORS settings
 CORS_ALLOWED_ORIGINS = [
