@@ -1,2 +1,0 @@
-web: gunicorn me_api.wsgi:application --bind 0.0.0.0:$PORT
-
