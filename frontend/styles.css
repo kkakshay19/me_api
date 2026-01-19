@@ -1,0 +1,182 @@
+/* Basic reset and typography */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f9f9f9;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+h1 {
+    color: #2c3e50;
+}
+
+h2 {
+    color: #34495e;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}
+
+/* Sections */
+section {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+/* Profile section */
+#profile-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.profile-item {
+    margin-bottom: 10px;
+}
+
+.social-links {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.social-links a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+.social-links a:hover {
+    text-decoration: underline;
+}
+
+/* Projects section */
+#projects-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.project-card {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    background: #fafafa;
+}
+
+.project-card h3 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.project-skills {
+    margin: 10px 0;
+}
+
+.skill-tag {
+    display: inline-block;
+    background: #3498db;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 0.9em;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+.project-links {
+    margin-top: 10px;
+}
+
+.project-links a {
+    color: #e74c3c;
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+.project-links a:hover {
+    text-decoration: underline;
+}
+
+/* Search sections */
+input[type="text"] {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 100%;
+    max-width: 300px;
+    margin-right: 10px;
+}
+
+button {
+    padding: 8px 16px;
+    background: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background: #2980b9;
+}
+
+#skill-results, #global-results {
+    margin-top: 20px;
+}
+
+/* Error messages */
+.error {
+    color: #e74c3c;
+    background: #faddd7;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 10px;
+}
+
+/* No results */
+.no-results {
+    color: #7f8c8d;
+    font-style: italic;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    #projects-content {
+        grid-template-columns: 1fr;
+    }
+
+    .social-links {
+        flex-direction: column;
+    }
+
+    input[type="text"] {
+        max-width: 100%;
+        margin-bottom: 10px;
+    }
+
+    button {
+        width: 100%;
+    }
+}

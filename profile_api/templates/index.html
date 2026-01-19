@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Me-API Playground</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Me-API Playground</h1>
+    </header>
+
+    <main>
+        <section id="profile-section">
+            <h2>Profile</h2>
+            <div id="profile-content">
+                <p>Loading profile...</p>
+            </div>
+        </section>
+
+        <section id="projects-section">
+            <h2>Projects</h2>
+            <div id="projects-content">
+                <p>Loading projects...</p>
+            </div>
+        </section>
+
+        <section id="skill-search-section">
+            <h2>Search Projects by Skill</h2>
+            <input type="text" id="skill-input" placeholder="Enter skill name (e.g., Python)">
+            <button id="skill-search-btn">Search</button>
+            <div id="skill-results">
+                <p>Enter a skill and click search</p>
+            </div>
+        </section>
+
+        <section id="global-search-section">
+            <h2>Global Search</h2>
+            <input type="text" id="global-search-input" placeholder="Search projects and skills">
+            <button id="global-search-btn">Search</button>
+            <div id="global-results">
+                <p>Enter search term and click search</p>
+            </div>
+        </section>
+    </main>
+
+    <script src="{% static 'script.js' %}"></script>
+</body>
+</html>
