@@ -91,7 +91,7 @@ DATABASES = {
     "default": dj_database_url.config(
         default=os.getenv(
             "DATABASE_URL",
-            "postgresql://postgres:Akshay%40125%2A@localhost:5432/me_api",
+            "postgresql://akshay:drzFiAIvXMPVJuVGwOrQcAlvG9CIiizG@dpg-d5ngsh4hg0os73dfe2pg-a.oregon-postgres.render.com/me_api_ed3h",
         ),
         conn_max_age=600,
     )
